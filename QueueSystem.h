@@ -8,7 +8,7 @@ Kelas     : 1A Kelompok A7
 Deskripsi : Header file dari prototype Queue linked list Antrian Aplikasi DocOyen 
 
 Tanggal   : 18-05-2022
-Versi     : 1.0
+Versi     : 1.1
 */ 
 
 #ifndef _QUEUESYSTEM_H 
@@ -29,82 +29,105 @@ Versi     : 1.0
 
 typedef char String[100];
 typedef struct tElmQueue *address;
-typedef struct InfoKucing *prosesPerawatan; 
 
+/** ADT untuk menyimpan informasi kucing **/
 typedef struct  {
 	String namaKucing;
 	String namaPemilik;
 	List Penyakit;
-	String kategori;
 	int prioritas;
 	int waktuDatang;
+	int waktuSelesai;
+	int estimasiWaktu;
 }InfoKucing;
 
+/** ADT Queue **/
 typedef struct tElmQueue{ 
 	InfoKucing info;
 	address next; 
 }ElmQueue; 
 
+/** ADT untuk menyimpan head dan tail dari queue **/
 typedef struct{ 
 	address HEAD; 
 	address TAIL; 
 }Queue; 
 
-typedef struct{ 
-	address FIRST; 
-	address NEXT; 
-}ListQueue; 
+/** ADT untuk menyimpan jumlah total penyakit per kategori **/
+typedef struct  {
+	int Ringan;
+	int Sedang;
+	int Berat;
+}JmlKategoriPenyakit;
 
-/**************** Constructor ****************************/ 
+/** ADT untuk menyimpan informasi kucing yang sedang dirawat **/
+typedef struct  {
+	InfoKucing info;
+	int waktuSelesai;
+	boolean OnGoing;
+}Onprocess;
 
+typedef struct  {
+	String NamaKucing;
+	String NamaPemilik;
+	String DaftarPenyakit;
+	String Date;
+}Riwayat;
+
+/**************** Constructor && Insert Antrian ****************************/ 
 void CreateQueue(Queue *Q); 
-/* I.S : Q terdefinisi tidak diketahui isinya 
-   F.S : Q diinisialisasi dengan HEAD(Q)=nil, TAIL(Q)=nil 
-*/ 
-
-address AlokasiQueue(InfoKucing informasi);
-/* mengirim sebuah address jika alokasi type Queue berhasil */
-
-void AddQue(Queue *Q, InfoKucing informasi); 
-/* I.S : Q terdefinisi sembarang mungkin kosong 
-   F.S : Q bertambah sebuah element/antrian dibelakang yang berisi informasi tentang kucing dan hal lainnya
-*/  
-
+void EnQue(Queue *Q, InfoKucing informasi);  
 void AddsortingQueue(Queue *Q, InfoKucing informasi);
+void insertAntrian(Queue *Q, InfoKucing informasi);
+void createEmptyJmlKategori(JmlKategoriPenyakit *jumlahPerKategori);
+List buildList(String daftarPenyakit);
+void createEmptyOnproses(Onprocess *Onproses);
+                        
+/**************** Manajement Memory **********************/
+address AlokasiQueue(InfoKucing informasi);
+void DeAlokasi(address P); 
 
 /**************** Descructor ****************************/ 
-void DeAlokasi(address P); 
-/* P direlease dari memori */
-
-void DelQue(Queue *Q); 
-/* I.S : Q terdefinisi sembarang tidak kosong 
-   F.S : Q berkurang satu elemen didepan 
-*/ 
+void DelQue(Queue *Antrian, Onprocess *onproses); 
 
 /**************** Mutator *****************************/ 
+void setWaktuSelesai(Queue Antrian,int Estimasi,int *waktuSelesai);
+void setJmlPerKategori(JmlKategoriPenyakit *jumlahPerKategori, String daftarPenyakit);
 
 /**************** Accessor ****************************/ 
-char* getKategoriPenyakit(List penyakit);
+int getTimeRightNow(Onprocess Onproses);
 
-
-/**************** Operasi penunjang ****************************/ 
-void CetakQueue(Queue Q); 
-/* I.S : Q terdefinisi sembarang 
-   F.S : elemen Queue dicetak dilayar, akan menampilkan "Antrian Kosong" di layar jika Q kosong
-*/ 
-
-//Operasi boolean dan relasi terhadap Queue 
+/**************** Validator ****************************/ 
 boolean IsQueueEmpty(Queue Q); 
-/* Mengirim true jika Queue kosong  dan false sebaliknya  */ 
-char* kategoriPenyakit(int Penyakit);
+boolean IsValidComeTime(int waktuKedatangan, Queue Antrian,Onprocess onproses);
+boolean isValidDiseases(String daftarPenyakit);
+
+/**************** Menu ****************************/ 
+void Registrasi(Queue *Antrian,Onprocess *Onproses);
+void ProsesAntrian(Queue *Antrian,Onprocess *Onproses);
+
+
+
+/**************** Operasi Penujang lainnya *************/ 
+void PrintAntrian(Queue Q,Onprocess onproses); 
+char* kategoriPenyakit(char Penyakit);
 char* Token(String inputanPenyakit, String Hasil);
-char* namaPenyakit(int nomorPenyaki);
-addressList buildList(String daftarPenyakit);
-void toStringPenyakit(char sakit,String *penyakit);
-void insertAntrian(Queue *Q, InfoKucing informasi);
-int HitungNilaiPrioritas(int Ringan, int Sedang, int Berat);
-int HitungWaktuEstimasi(int Ringan, int Sedang, int Berat);
-void Registrasi(Queue *Antrian);
+char* namaPenyakit(char nomorPenyakit);
+int HitungNilaiPrioritas(JmlKategoriPenyakit jumlahPerKategori);
+int HitungWaktuEstimasi(JmlKategoriPenyakit jumlahPerKategori);
+void UpdateWaktuSelesai(Queue *Antrian, int LastTime);
+void cekonproses(Queue *Antrian, Onprocess *onproses);
+int findMaxWaktuKedatangan(Queue Antrian);
+void ListDaftarPenyakit();
+void AddRiwayat(InfoKucing info);
+void TampilRiwayat();
+char *riwayatPenyakit(addressList L,String Temp);
+char *DateNow(String Temp);
+void cariRiwayat();
+void MenuRiwayat();
+void DelAfter(Queue *Antrian,Onprocess onproses);
+void loading();
+
 #endif
 
 

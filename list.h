@@ -95,7 +95,7 @@ void InsVLast (List * L, String Penyakit);
 
 
 /**** PROSES SEMUA ELEMEN LIST  ****/
-void PrintDaftarPenyakit (List L);
+void PrintDaftarPenyakit (addressList L);
 /* IS : L mungkin kosong */
 /* FS : Jika List tidak kosong, semua info yang disimpan pada elemen list */
 /*	diprint. Jika list kosong, hanya menuliskan "List Kosong" */

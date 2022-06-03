@@ -143,20 +143,18 @@ void InsertLast (List * L, addressList P){
 
 
 ///**** PROSES SEMUA ELEMEN LIST  ****/
-void PrintDaftarPenyakit (List L){
+void PrintDaftarPenyakit (addressList L){
 /* IS : L mungkin kosong */
 /* FS : Jika List tidak kosong, semua info yang disimpan pada elemen list */
 /*	diprint. Jika list kosong, hanya menuliskan "List Kosong" */
-	addressList P = First(L);
 	
-	if(P==Nil){
+	if(L == Nil){
 		printf("\nList Kosong");
 	}else{
-		printf("\nIsi List : ");
-		while(P->next != Nil){
-			printf("%s->",Info(P));
-			P=Next(P);
-		}printf("%s",Info(P));
+		while(L->next != Nil){
+			printf("%s,",L->info);
+			L=L->next;
+		}printf("%s\n",L->info);
 	}
 }
 
